@@ -1,0 +1,2 @@
+[0120/012524.491:ERROR:directory_reader_win.cc(43)] FindFirstFile: Sistem belirtilen yolu bulamýyor. (0x3)
+[0125/072054.781:ERROR:file_io.cc(90)] ReadExactly: expected 36, observed 0

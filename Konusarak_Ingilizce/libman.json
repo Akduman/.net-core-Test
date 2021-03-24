@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "twitter-bootstrap@4.5.3",
+      "destination": "wwwroot/twitter-bootstrap/"
+    },
+    {
+      "library": "alertify.js@0.3.11",
+      "destination": "wwwroot/alertify.js/"
+    },
+    {
+      "library": "AlertifyJS@1.13.1",
+      "destination": "wwwroot/AlertifyJS/"
+    },
+    {
+      "library": "cheerio@0.22.0",
+      "destination": "wwwroot/cheerio/"
+    }
+  ]
+}

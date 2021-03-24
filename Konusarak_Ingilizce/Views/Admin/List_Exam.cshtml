@@ -1,0 +1,102 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+
+<br />
+<br />
+<h5>Sınav Listesi</h5>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <div class="text-right"><a class="btn btn-success" asp-controller="Admin" asp-action="Create_exam">Yeni Sınav Oluştur</a></div>
+    </div>
+</div>
+<hr />
+<br />
+
+<a href="javascript:void(0)"><i id="test" class="test"> test</i></a>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Başlık</th>
+            <th scope="col">Tarih</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int i = 1;}
+        @foreach (var item in ViewBag.exams)
+        {
+            <tr id="item-@item.ExamId">
+                <th scope="row">@i</th>
+                <td>@item.Title</td>
+                <td>@item.Time</td>
+                <td><button class="btn alert-danger test" name="@item.ExamId" type="submit" id="@item.ExamId"> Sil </button></td>
+                @{i++;}
+            </tr>
+         }
+     
+    </tbody>
+</table>
+
+<hr />
+
+
+
+
+
+@section scripts{
+    <script>
+        $(".test").click(function () {
+            destroy_id = $(this).attr('id');
+
+            alertify.confirm('Silmek istediğinize emin misiniz?', 'Bu işlem daha sonra geri alınamaz.',
+                function () {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "Remove_exam/" + destroy_id,
+                        success: function (msg) {
+                            if (msg) {
+                                $("#item-" + destroy_id).remove();
+                                alertify.success("Silme işlemi başarı ile gerçekleştirildi.");
+
+                            } else {
+                                alertify.error("Silme işlemi iptal edildi.");
+                            }
+                        }
+                    });
+                },
+                function () {
+                    alertify.error('Eroorr');
+                }
+            )
+
+        });
+
+
+    </script>
+
+
+
+    @try
+     {
+        if ((ViewBag.sessions == "true"))
+        {
+
+        <script>
+            alertify.success("Sınav Başarı ile oluşturuldu.");
+        </script>
+        }
+     }
+    catch (Exception)
+     {
+
+
+     }
+
+}
+

@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "Exam";
+
+}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>@ViewBag.exam.Title</h1>
+            <p>@ViewBag.exam.Text</p>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    @{int i = 1;}
+    @while(i<=4)
+    {
+         <div class="row">
+            <div class="col-6">
+                <h5> Soru @i -) @ViewBag.exam.Questions[i-1].Quest</h5>
+                <div id="@i'A" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'A')">A-)  @ViewBag.exam.Questions[i-1].Option_a </div> <br>
+                <div id="@i'B" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'B')">B-)  @ViewBag.exam.Questions[i-1].Option_b </div> <br>
+                <div id="@i'C" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'C')">C-)  @ViewBag.exam.Questions[i-1].Option_c </div>  <br>
+                <div id="@i'D" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'D')">D-)  @ViewBag.exam.Questions[i-1].Option_d </div> <br>
+                <input id="@i" type="hidden" hidden name="" value="" />
+            </div>
+            @{i++;}
+       
+             <div class="col-6">
+                 <h5> Soru @i -)@ViewBag.exam.Questions[i - 1].Quest</h5>
+                 <div id="@i'A" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'A')">A-)  @ViewBag.exam.Questions[i - 1].Option_a </div> <br>
+                 <div id="@i'B" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'B')">B-)  @ViewBag.exam.Questions[i - 1].Option_b </div> <br>
+                 <div id="@i'C" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'C')">C-)  @ViewBag.exam.Questions[i - 1].Option_c </div>  <br>
+                 <div id="@i'D" type="submit" class="btn btn-outline-info btn-block @i" onclick="click_answer(this.id,@i,'D')">D-)  @ViewBag.exam.Questions[i - 1].Option_d </div> <br>
+                 <input id="@i" type="hidden" hidden name="" value="" />
+             </div>
+             @{i++;}
+          </div>
+
+     }
+
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button name="@ViewBag.exam.ExamId" type="button" class="btn btn-outline-info btn-lg btn-block send">SINAVI TAMAMLA</button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function click_answer(id, classes, answer) {
+            var doc = document.getElementsByClassName(classes);
+            for (i = 0; i < doc.length; i++) {
+                doc[i].style.backgroundColor = "transparent";
+                doc[i].style.color = "#17a2b8"
+            }
+            document.getElementById(id).style.backgroundColor = "#17a2b8";
+            document.getElementById(id).style.color = "white";           
+            document.getElementById(classes).value = answer;
+        }
+    </script>
+
+
+
+    <script>
+
+        $(".send").click(function () {
+            id = $(this).attr('name');
+            
+            alertify.confirm('Sınavı tamamlamak istediğinize emin misiniz?', 'Bu işlem daha sonra geri alınamaz.',
+                function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/GetAnswer/" + id,
+                        success: function (msg) {
+                            if (msg) {  
+                                for (var i = 1; i <= 4; i++) {
+                                    alert(document.getElementById(i).value);
+                                    alert(msg[i - 1]);
+
+                                    if (document.getElementById(i).value==msg[i-1]) {
+                                        document.getElementById((i + "'" + msg[i-1])).style.backgroundColor ="Green";
+                                    }
+                                    else {
+                                        document.getElementById((i + "'" + msg[i-1])).style.backgroundColor = "Red";
+                                    }
+                                    
+                                }
+                            } else {
+                                alertify.error("Sonuç alma işlemi iptal edildi.");
+                            }
+                        }
+                    });
+                },
+                function () {
+                    alertify.error('Erorr');
+                }
+            )
+
+        });
+
+    </script>
+}
